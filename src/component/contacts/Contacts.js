@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useSelector } from "react-redux";
 import Contact from "./Contact";
-import {Link} from "react-router-dom";
 
 function Contacts() {
-    const contact = useSelector(state => state.contacts.contacts);
+const [selectAll, setSelectAll] = useState(""); 
+const contact = useSelector(state => state.contacts.contacts);
     console.log(contact);
     return (
         <div>
@@ -13,8 +13,8 @@ function Contacts() {
                     <tr>
                         <th scope="col">
                             <div className="custom-control custom-checkbox">
-                                <input type="checkbox" className="custom-control-input" />
-                                <label className="custom-control-label"></label>
+                                <input type="checkbox" value={selectAll} onClick={()=> setSelectAll(!selectAll)} id="selectAll" className="custom-control-input" />
+                                <label htmlFor="selectAll" className="custom-control-label"></label>
                             </div>
                         </th>
                         <th scope="col">Name</th>
@@ -24,7 +24,7 @@ function Contacts() {
                     </tr>
                 </thead>
                 <tbody>
-                    {contact.map(contact => <Contact key={contact.id} contact={contact}/>)}
+                    {contact.map(contact => <Contact key={contact.id} contact={contact} selectAll={selectAll} />)}
                 </tbody>
             </table>
         </div>
