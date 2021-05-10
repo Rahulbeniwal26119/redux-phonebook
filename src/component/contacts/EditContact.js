@@ -30,8 +30,9 @@ function EditContact() {
             setEmail(contact.email);
         }
 
-        dispatch(getContact(id))
-    }, [contact])
+        dispatch(getContact(id));
+        
+    }, [contact, dispatch, id])
 
     const onUpdateContact = (e) => {
         e.preventDefault();
@@ -39,6 +40,7 @@ function EditContact() {
         const update_contact= Object.assign(contact, {name,phone,email});
         console.log(updateContact);
         dispatch(updateContact(update_contact));
+        history.push("/")
 
     }
     return (
