@@ -1,19 +1,36 @@
-import React, {useState} from 'react'
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from "react-redux";
 import Contact from "./Contact";
-
+import { selectAllContact, clearAllContact, deleteSelectedContact } from "../../actions/contactAction";
 function Contacts() {
-const [selectAll, setSelectAll] = useState(""); 
-const contact = useSelector(state => state.contacts.contacts);
+    const dispatch = useDispatch();
+    const [selectAll, setSelectAll] = useState("");
+    const contact = useSelector(state => state.contacts.contacts);
+    const selectedContacts = useSelector((state) => state.contacts.selectedContact);
+
+    useEffect(() => {
+        if (selectAll) {
+            dispatch(selectAllContact(contact.map(contact => contact.id)))
+        }
+        else 
+        {
+            dispatch(clearAllContact())
+        }
+    })
     console.log(contact);
     return (
         <div>
+            {
+                selectedContacts.length > 0 ?  (
+                    <button onClick={()=> dispatch(deleteSelectedContact())} className="btn btn-danger mb-3">Delete Selected</button>
+                ) : null
+            }
             <table className="table shadow">
                 <thead>
                     <tr>
                         <th scope="col">
                             <div className="custom-control custom-checkbox">
-                                <input type="checkbox" value={selectAll} onClick={()=> setSelectAll(!selectAll)} id="selectAll" className="custom-control-input" />
+                                <input type="checkbox" value={selectAll} onClick={() => setSelectAll(!selectAll)} id="selectAll" className="custom-control-input" />
                                 <label htmlFor="selectAll" className="custom-control-label"></label>
                             </div>
                         </th>
